@@ -1,19 +1,69 @@
-async function fetchArticle(data: any) {
-    const fetchedArticle = await fetch(data.results[0].url, {
+import getArticles from '../articles/articles'
+
+async function getAllArticlesId() {
+
+    const [trendingNow, thisWeek, thisMonth] = await getArticles()
+    const bundledData = [...trendingNow, ...thisWeek, ...thisMonth]
+    
+    return (
+        bundledData.map((article: any) => {
+            return {
+                params: {
+                    id: article['id'].toString()
+                }
+            }
+        })
+    )
+    
+}
+
+async function getArticleData(id: number) {
+
+    const [trendingNow, thisWeek, thisMonth] = await getArticles()
+    const bundledData = [...trendingNow, ...thisWeek, ...thisMonth]
+
+    const articlesData = bundledData.map((article: any) => {
+        return JSON.parse(JSON.stringify(article))
+    })
+
+    const articleData = articlesData.filter((item: any) => {
+        return item['id'] == id
+    })[0]
+
+    let [htmlContent] = await Promise.all([
+        fetchArticleHTMLData(articleData['url'])
+    ])
+    
+    const html = JSON.parse(JSON.stringify(htmlContent))
+
+    return {
+        id,
+        articleData,
+        html
+    }
+
+}
+
+async function fetchArticleHTMLData(url: string) {
+
+    const fetchedArticle = await fetch(url, {
         method: 'GET',
     })
     const textedFetchedArticle = await fetchedArticle.text()
 
-    // var parser = new DOMParser()
-    // var doc = parser.parseFromString(text, 'text/html')
+    const jsdom = require('jsdom')
+    const { JSDOM } = jsdom
+
+    const dom = new JSDOM(textedFetchedArticle)
     
-    // var articleContent = doc.querySelectorAll('.StoryBodyCompanionColumn')
-    // let mod =  articleContent[0].querySelectorAll('p')[0].querySelectorAll('a')[0]
-    // mod['className'] = 'haha'
-    // console.log(mod['className'])
-    // console.log(mod['innerHTML'])
+    const articleContent = dom.window.document.querySelector('.NYTAppHideMasthead')
+    articleContent.style.setProperty('display', 'none', "important")
+    articleContent.style.setProperty('z-index', 0, "important")
+    
+    // console.log(articleContent.style)
 
     return textedFetchedArticle
+
 }
 
-export { fetchArticle }
+export { getAllArticlesId, getArticleData }

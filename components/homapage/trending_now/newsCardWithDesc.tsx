@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import styles from '../../../styles/NewsWithSummary.module.scss'
 
@@ -27,9 +28,13 @@ export default function NewsWithSummary({ newsData }: props) {
                 </span>
             </div>
             <div className={styles.detail}>
-                <header className={styles.title}>
-                    {newsData['title']}
-                </header>
+                <Link href={`/articles/${newsData['id']}`}>
+                    <a tabIndex={0}>
+                        <header className={styles.title}>
+                            {newsData['title']}
+                        </header>
+                    </a>
+                </Link>
                 <p className={styles.summary}>
                     {newsData['abstract']}
                 </p>

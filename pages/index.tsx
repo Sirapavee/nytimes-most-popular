@@ -2,55 +2,72 @@ import Head from 'next/head'
 
 import styles from '../styles/Home.module.scss'
 
-import { fetchTrendingNow } from '../articles/trendingNow'
-import { fetchMostEmailed, fetchLastWeek, fetchfacebook } from '../articles/categoryTrending'
+import getArticles, { getSections, getPeriodSections } from '../articles/articles'
 
 import NavigationBar from '../components/navigation/navbar'
 import TrendingNow from '../components/homapage/trending_now/trendingNow'
-import TrendingByCategory from '../components/homapage/trendingByCategory/trendingCategory'
+import TrendingByPeriod from '../components/homapage/trending_now/trendingByPeriod'
 
 interface props {
-  trendingNowData: any,
-  bundledCategoryData: any[]
+    bundledCategoryData: any,
+    sectionList: any,
+    periodSectionList: any
 }
 
-export default function Home({ trendingNowData, bundledCategoryData }: props) {
-  
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Trending - NY Times</title>
-        <meta name="description" content="Homepage for most popular NY times articles" />
-        <link rel="icon" href="/logo.svg" />
-      </Head>
+export default function Home({ bundledCategoryData, sectionList, periodSectionList }: props) {
+    // console.log(periodSectionList['trendingNow'][Object.keys(periodSectionList['trendingNow'])[0]])
+    return (
+        <div className={styles.container}>
+            <Head>
+                <title>NY Times</title>
+                <meta name="description" content="Homepage for most popular NY times articles" />
+                <link rel="icon" href="/logo.svg" />
+            </Head>
 
-      <NavigationBar />
-      <TrendingNow trendingNowData={trendingNowData} />
-      <div className={styles.hrLine} />
-      <TrendingByCategory trendingCategoryData={bundledCategoryData} />
+            <NavigationBar sectionList={sectionList} />
 
-    </div>
-  )
+            <div className={styles.holder} />
+            <TrendingByPeriod
+                trendingPeriodData={periodSectionList['trendingNow']}
+                title={'Trending Now'}
+                subtitle={'Hello. These stories are most popular with our readers this minute.'}
+            />
+            <div className={styles.hrLine} />
+            <TrendingByPeriod
+                trendingPeriodData={periodSectionList['thisWeek']}
+                title={'In Case You Missed It'}
+                subtitle={"A recap of last week's most popular articles"}
+            />
+            <div className={styles.hrLine} />
+            <TrendingByPeriod
+                trendingPeriodData={periodSectionList['thisMonth']}
+                title={'Monthly Top'}
+                subtitle={'A catch up for last month popular stories'}
+            />
+            <div className={styles.hrLine} />
+            <div className={styles.holder} />
+        </div>
+    )
 }
 
 export async function getServerSideProps() {
-  const trendingNowData = await fetchTrendingNow()
-  const mostEmailedData = await fetchMostEmailed()
-  const lastWeekData = await fetchLastWeek()
-  const facebookData = await fetchfacebook()
+    const [trendingNow, thisWeek, thisMonth] = await getArticles()
+    const sectionList = await getSections()
+    const periodSectionList = await getPeriodSections()
 
-  const bundledCategoryData = [mostEmailedData, lastWeekData, facebookData]
+    const bundledCategoryData = [trendingNow, thisWeek, thisMonth]
 
-  if (!trendingNowData && !mostEmailedData && !lastWeekData && !facebookData) {
+    if (!trendingNow && !thisWeek && !thisMonth && !sectionList && !periodSectionList) {
+        return {
+            notFound: true,
+        }
+    }
+
     return {
-      notFound: true,
+        props: {
+            bundledCategoryData,
+            sectionList,
+            periodSectionList
+        }
     }
-  }
-
-  return {
-    props: {
-      trendingNowData,
-      bundledCategoryData
-    }
-  }
 }

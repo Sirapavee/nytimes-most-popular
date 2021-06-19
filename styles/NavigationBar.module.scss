@@ -11,7 +11,7 @@
     justify-content: center;
     text-align: center;
     border-bottom: 1px solid black;
-    z-index: 1;
+    z-index: 3;
 }
 
 .title {
@@ -21,30 +21,51 @@
 
 .sidebarbtn {
     position: absolute;
-    left: 30px;
+    left: 2%;
     padding: 5px;
     border-radius: 5px;
     transition: 0.5s;
+    cursor: pointer;
 }
 
 .sidebarbtn:hover {
     background-color: hsla(0, 0%, 50%, 0.267);
 }
 
-.searchbtn {
+.searchSpace {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    left: 80px;
-    padding: 2px;
+    left: 5%;
+    height: 90%;
+    transition: 0.5s;
+}
+
+.searchbtn {
+    padding: 5px;
     border-radius: 5px;
     transition: 0.5s;
+    cursor: pointer;
+}
+
+.searchbtn[data-isclicked=true] {
+    background-color: hsla(0, 0%, 50%, 0.267);
+}
+
+.searchbtn[data-isclicked=false] {
+    background-color: transparent;
 }
 
 .searchbtn:hover {
     background-color: hsla(0, 0%, 50%, 0.267);
 }
 
-@media only screen and (max-width: 769px) {
-    .searchbtn {
+@media only screen and (max-width: 1001px) {
+
+    .searchSpace {
         display: none;
     }
+
 }

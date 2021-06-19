@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import styles from '../../../styles/NewsBrief.module.scss'
 
@@ -26,9 +27,13 @@ export default function NewsBrief({ newsData }: props) {
                     {copyright}
                 </span>
             </div>
-            <header className={styles.title}>
-                {newsData['title']}
-            </header>
+            <Link href={`/articles/${newsData['id']}`}>
+                <a tabIndex={0}>
+                    <header className={styles.title}>
+                        {newsData['title']}
+                    </header>
+                </a>
+            </Link>
         </section>
     )
 }

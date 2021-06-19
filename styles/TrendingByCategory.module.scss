@@ -6,6 +6,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
+    margin: 0 0 10px 0;
 }
 
 .categoryContainer {
@@ -46,7 +47,7 @@
 
 .vertLine {
     width: 1px;
-    height: 98%;
+    height: 100%;
     background-color: black;
     margin: 0 2% 0 2%;
 }

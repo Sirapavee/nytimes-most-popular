@@ -1,11 +1,15 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
 
 import styles from '../../styles/SideBar.module.scss'
 
+import SearchBarResponsive from './searchbarResp'
+
 interface props {
     status: boolean,
     signal: any,
+    sectionList?: any
 }
 
 const OutsideHover = (ref: any, status: boolean) => {
@@ -33,27 +37,10 @@ const OutsideHover = (ref: any, status: boolean) => {
     return isHovered
 }
 
-export default function SideBar({ status, signal }: props) {
-
+export default function SideBar({ status, signal, sectionList }: props) {
+    
     const sidebarRef = useRef(null)
     const hoverOutside = OutsideHover(sidebarRef, status)
-
-    console.log(status, hoverOutside)
-    
-    const isOpen = () => {
-        if (hoverOutside === false) {
-            if (status === true) {
-                return true
-            }
-            else {
-                return false
-            }
-        }
-        else {
-            signal()
-            return false
-        }
-    }
 
     return (
         <div 
@@ -69,10 +56,25 @@ export default function SideBar({ status, signal }: props) {
                     height={15}
                 />
             </div>
-            <a href="#">Homapage</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a>
+            <div className={styles.searchContainer}>
+                <SearchBarResponsive />
+            </div>
+            <Link href={'/'}>
+                <a>Homapage</a>
+            </Link>
+            <Link href={'/indexAlternate'}>
+                <a>Alternate Homapage</a>
+            </Link>
+            <div className={styles.hrLine} />
+            {
+                Object.keys(sectionList).map((key: string) => {
+                    return (
+                        <Link key={key} href={`/sections/${key}`}>
+                            <a>{key}</a>
+                        </Link>
+                    )
+                })
+            }
         </div>
     )
 }

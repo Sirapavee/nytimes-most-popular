@@ -1,24 +1,19 @@
-import styles from '../../styles/SearchBar.module.scss'
+import styles from '../../styles/SearchBarResponsive.module.scss'
 
-interface props {
-    isOpen: boolean,
-}
-
-export default function SearchBar({ isOpen }: props) {
+export default function SearchBarResponsive() {
     return (
         <section
             className={styles.container}
-            data-isopen={isOpen}
         >
             <input 
-                id={'searchField'} 
+                id={'searchFieldRes'} 
                 name={'search'} 
                 type={'text'} 
                 placeholder={'SEARCH'} 
                 required 
                 className={styles.searchField}
             ></input>
-            <button id={'submitBtn'} className={styles.submitBtn} type={'submit'}>GO</button>
+            <button id={'submitBtnRes'} className={styles.submitBtn} type={'submit'}>GO</button>
         </section>
     )
 }
