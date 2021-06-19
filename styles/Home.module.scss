@@ -14,6 +14,14 @@
   margin: 2% 0 0 0;
 }
 
+.hrLine[data-isbeingsearch=true] {
+  display: none;
+}
+
+.hrLine[data-isbeingsearch=false] {
+  display: block;
+}
+
 .holder {
   width: 100%;
   height: 6vh;

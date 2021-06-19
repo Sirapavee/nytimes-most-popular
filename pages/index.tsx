@@ -1,21 +1,32 @@
 import Head from 'next/head'
+import { useState } from 'react'
 
 import styles from '../styles/Home.module.scss'
 
 import getArticles, { getSections, getPeriodSections } from '../articles/articles'
 
 import NavigationBar from '../components/navigation/navbar'
-import TrendingNow from '../components/homapage/trending_now/trendingNow'
 import TrendingByPeriod from '../components/homapage/trending_now/trendingByPeriod'
+import SearchResults from '../components/navigation/searchResults'
+
+import { removeDup, filterSearch } from '../utils/utilities'
 
 interface props {
-    bundledCategoryData: any,
+    allArticles: any,
     sectionList: any,
     periodSectionList: any
 }
 
-export default function Home({ bundledCategoryData, sectionList, periodSectionList }: props) {
-    // console.log(periodSectionList['trendingNow'][Object.keys(periodSectionList['trendingNow'])[0]])
+export default function Home({ allArticles, sectionList, periodSectionList }: props) {
+
+    const [queryText, setQueryText] = useState('')
+
+    const updateQueryText = (query: string) => {
+        setQueryText(query)
+    }
+
+    const results = filterSearch(queryText, removeDup(allArticles))
+
     return (
         <div className={styles.container}>
             <Head>
@@ -24,27 +35,39 @@ export default function Home({ bundledCategoryData, sectionList, periodSectionLi
                 <link rel="icon" href="/logo.svg" />
             </Head>
 
-            <NavigationBar sectionList={sectionList} />
+            <NavigationBar sectionList={sectionList} signal={updateQueryText} query={queryText} />
 
             <div className={styles.holder} />
+            {
+                queryText.length > 0 ?
+                    <SearchResults results={results} origin={'index'} />
+                    // JSON.stringify(results)
+                : 
+                    <div />
+            }
             <TrendingByPeriod
                 trendingPeriodData={periodSectionList['trendingNow']}
                 title={'Trending Now'}
                 subtitle={'Hello. These stories are most popular with our readers this minute.'}
+                isBeingSearch={Boolean(queryText.length)}
             />
-            <div className={styles.hrLine} />
+            <div className={styles.hrLine} data-isbeingsearch={Boolean(queryText.length)} />
+
             <TrendingByPeriod
                 trendingPeriodData={periodSectionList['thisWeek']}
                 title={'In Case You Missed It'}
                 subtitle={"A recap of last week's most popular articles"}
+                isBeingSearch={Boolean(queryText.length)}
             />
-            <div className={styles.hrLine} />
+            <div className={styles.hrLine} data-isbeingsearch={Boolean(queryText.length)} />
+
             <TrendingByPeriod
                 trendingPeriodData={periodSectionList['thisMonth']}
                 title={'Monthly Top'}
                 subtitle={'A catch up for last month popular stories'}
+                isBeingSearch={Boolean(queryText.length)}
             />
-            <div className={styles.hrLine} />
+            <div className={styles.hrLine} data-isbeingsearch={Boolean(queryText.length)} />
             <div className={styles.holder} />
         </div>
     )
@@ -55,9 +78,9 @@ export async function getServerSideProps() {
     const sectionList = await getSections()
     const periodSectionList = await getPeriodSections()
 
-    const bundledCategoryData = [trendingNow, thisWeek, thisMonth]
+    const allArticles = [...trendingNow, ...thisWeek, ...thisMonth]
 
-    if (!trendingNow && !thisWeek && !thisMonth && !sectionList && !periodSectionList) {
+    if (!trendingNow && !thisWeek && !thisMonth && !allArticles && !sectionList && !periodSectionList) {
         return {
             notFound: true,
         }
@@ -65,7 +88,7 @@ export async function getServerSideProps() {
 
     return {
         props: {
-            bundledCategoryData,
+            allArticles,
             sectionList,
             periodSectionList
         }

@@ -1,0 +1,53 @@
+.container {
+    width: 70vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.holder {
+    width: 100%;
+    height: 6vh;
+}
+
+.newsSummaryCard {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.hrLine {
+    width: 100%;
+    height: 2px;
+    background-color: black;
+    margin: 10px 0 10px 0;
+}
+
+.noResult {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 2rem;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1001px) {
+
+    .container {
+        width: 90vw;
+    }
+
+    .noResult {
+        height: auto;
+    }
+    
+}

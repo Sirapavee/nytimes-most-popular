@@ -5,14 +5,16 @@ import TrendingByPeriodSection from './trendingByPeriodSection'
 interface props {
     trendingPeriodData: any,
     title: string,
-    subtitle: string
+    subtitle: string,
+    isBeingSearch: boolean
 }
 
-export default function TrendingByPeriod({ trendingPeriodData, title, subtitle }: props) {
+export default function TrendingByPeriod({ trendingPeriodData, title, subtitle, isBeingSearch }: props) {
 
     return (
         <section
             className={styles.container}
+            data-isbeingsearch={isBeingSearch}
         >
             <div className={styles.header}>
                 <header className={styles.title}>{title}</header>

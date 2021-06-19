@@ -2,9 +2,12 @@ import styles from '../../styles/SearchBar.module.scss'
 
 interface props {
     isOpen: boolean,
+    signal: any,
+    query: string
 }
 
-export default function SearchBar({ isOpen }: props) {
+export default function SearchBar({ isOpen, signal, query }: props) {
+
     return (
         <section
             className={styles.container}
@@ -17,8 +20,9 @@ export default function SearchBar({ isOpen }: props) {
                 placeholder={'SEARCH'} 
                 required 
                 className={styles.searchField}
+                onChange={input => signal(input.target.value)}
+                value={query}
             ></input>
-            <button id={'submitBtn'} className={styles.submitBtn} type={'submit'}>GO</button>
         </section>
     )
 }

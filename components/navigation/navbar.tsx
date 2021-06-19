@@ -8,10 +8,12 @@ import SideBar from './sidebar'
 import SearchBar from './searchbar'
 
 interface props {
-    sectionList?: any
+    sectionList?: any,
+    signal: any,
+    query: string
 }
 
-export default function NavigationBar({ sectionList }: props) {
+export default function NavigationBar({ sectionList, signal, query }: props) {
 
     const [isSideBarOpen, setIsSideBarOpen] = useState(false)
     const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
@@ -22,6 +24,12 @@ export default function NavigationBar({ sectionList }: props) {
 
     const openSearchBar = () => {
         setIsSearchBarOpen(!isSearchBarOpen)
+        signal('')
+    }
+
+    const closeSideBarAndClearQuery = () => {
+        openSideBar()
+        openSearchBar()
     }
 
     return (
@@ -47,9 +55,9 @@ export default function NavigationBar({ sectionList }: props) {
                         height={20}
                     />
                 </span>
-                <SearchBar isOpen={isSearchBarOpen} />
+                <SearchBar isOpen={isSearchBarOpen} signal={signal} query={query} />
             </div>
-            <SideBar status={isSideBarOpen} signal={openSideBar} sectionList={sectionList} />
+            <SideBar status={isSideBarOpen} signal={openSideBar} sectionList={sectionList} searchSignal={signal} query={query} exit={closeSideBarAndClearQuery} />
             <Link href={'/'}>
                 <a>
                     <p className={styles.title}>The New York Times</p> 

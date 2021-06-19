@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useState } from 'react'
 
 import styles from '../../styles/Section.module.scss'
 
@@ -7,6 +8,9 @@ import { getAllSectionId, getSectionData } from '../../articles/fetchSectionCont
 
 import NavigationBar from '../../components/navigation/navbar'
 import ArticleBox from '../../components/section/article'
+import SearchResults from '../../components/navigation/searchResults'
+
+import { removeDup, filterSearch } from '../../utils/utilities'
 
 interface props {
     sectionData: any,
@@ -15,16 +19,15 @@ interface props {
 
 export default function Article({ sectionData, sectionList }: props) {
 
-    // log length of data
-    // console.log(sectionData.sectionData.length)
-    
-    const sectionDataUnique = sectionData.sectionData.reduce((unique: any, curArticle: any) => {
-        if(!unique.some((otherArticle: any) => otherArticle['id'] === curArticle['id'])) {
-          unique.push(curArticle);
-        }
-        return unique;
-    },[]);
+    const [queryText, setQueryText] = useState('')
 
+    const updateQueryText = (query: string) => {
+        setQueryText(query)
+    }
+
+    const sectionDataUnique = removeDup(sectionData.sectionData)
+    const results = filterSearch(queryText, sectionDataUnique)
+    
     return(
         <div className={styles.container}>
             <Head>
@@ -33,18 +36,32 @@ export default function Article({ sectionData, sectionList }: props) {
                 <link rel="icon" href="/logo.svg" />
             </Head>
             
-            <NavigationBar sectionList={sectionList} />
-            <header className={styles.header}>
-                <h1>{sectionData.section}</h1>
-            </header>
+            <NavigationBar sectionList={sectionList} signal={updateQueryText} query={queryText} />
             
             {
+                queryText.length > 0 ?
+                    <SearchResults results={results} origin={'section'} />
+                :
+                    <div>
+                        <header className={styles.header}>
+                            <h1>{sectionData.section}</h1>
+                        </header>
+                        {
+                            sectionDataUnique.map((article: any) => {
+                                return (
+                                    <ArticleBox key={article['id']} articleData={article} />
+                                )
+                            })
+                        }
+                    </div>
+            }
+            {/* {
                 sectionDataUnique.map((article: any) => {
                     return (
                         <ArticleBox key={article['id']} articleData={article} />
                     )
                 })
-            }
+            } */}
         </div>
     );
 }
