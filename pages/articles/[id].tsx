@@ -30,6 +30,18 @@ export default function AnArticle({ articleData, sectionList }: props) {
                 <meta name="description" content="One of the most popular NY times articles" />
                 <link rel="icon" href="/logo.svg" />
             </Head>
+            <div className={styles.backBtn}>
+                <Link href={'/'}>
+                    <a>
+                        <Image 
+                            src={'/back_arrow.svg'}
+                            alt={'back to menu'}
+                            width={50}
+                            height={50}
+                        />
+                    </a>
+                </Link>
+            </div>
 
             <span onClick={openSideBar} className={styles.sidebarbtn}>
                 <Image 

@@ -11,7 +11,7 @@ interface props {
     sectionList?: any,
     searchSignal?: any,
     query?: any,
-    exit: any
+    exit?: any
 }
 
 export default function SideBar({ status, signal, sectionList, searchSignal, query, exit }: props) {
