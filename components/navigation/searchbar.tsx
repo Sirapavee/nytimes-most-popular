@@ -2,11 +2,11 @@ import styles from '../../styles/SearchBar.module.scss'
 
 interface props {
     isOpen: boolean,
-    signal: any,
+    queryUpdateSignal: any,
     query: string
 }
 
-export default function SearchBar({ isOpen, signal, query }: props) {
+export default function SearchBar({ isOpen, queryUpdateSignal, query }: props) {
 
     return (
         <section
@@ -20,7 +20,7 @@ export default function SearchBar({ isOpen, signal, query }: props) {
                 placeholder={'SEARCH'} 
                 required 
                 className={styles.searchField}
-                onChange={input => signal(input.target.value)}
+                onChange={input => queryUpdateSignal(input.target.value)}
                 value={query}
             ></input>
         </section>

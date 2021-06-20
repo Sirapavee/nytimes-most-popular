@@ -6,22 +6,22 @@ import styles from '../../styles/SideBar.module.scss'
 import SearchBarResponsive from './searchbarResp'
 
 interface props {
-    status: boolean,
-    signal: any,
+    isOpenStatus: boolean,
+    openSignal: any,
     sectionList?: any,
-    searchSignal?: any,
+    queryUpdateSignal?: any,
     query?: any,
     exit?: any
 }
 
-export default function SideBar({ status, signal, sectionList, searchSignal, query, exit }: props) {
+export default function SideBar({ isOpenStatus, openSignal, sectionList, queryUpdateSignal, query, exit }: props) {
 
     return (
         <div 
             className={styles.container} 
-            data-isopen={status}
+            data-isopen={isOpenStatus}
         >
-            <div className={styles.closebtn} onClick={signal}>
+            <div className={styles.closebtn} onClick={openSignal}>
                 <Image
                     src={'/cross.svg'}
                     alt={'close button'}
@@ -30,13 +30,13 @@ export default function SideBar({ status, signal, sectionList, searchSignal, que
                 />
             </div>
             <div className={styles.searchContainer} data-isidpage={query}>
-                <SearchBarResponsive signal={searchSignal} jumpToResultSignal={signal} query={query} />
+                <SearchBarResponsive queryUpdateSignal={queryUpdateSignal} jumpToResultSignal={openSignal} query={query} />
             </div>
             <Link href={'/'}>
-                <a onClick={signal}>Homapage</a>
+                <a onClick={openSignal}>Homapage</a>
             </Link>
             <Link href={'/indexAlternate'}>
-                <a onClick={signal}>Alternate Homapage</a>
+                <a onClick={openSignal}>Alternate Homapage</a>
             </Link>
             <div className={styles.hrLine} />
             {

@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.scss'
 
 import getArticles, { getSections } from '../articles/articles'
 
+import ScrollArrow from '../components/scrollToTop'
 import NavigationBar from '../components/navigation/navbar'
 import TrendingNow from '../components/homapage/trending_now/trendingNow'
 import SearchResults from '../components/navigation/searchResults'
@@ -39,7 +40,7 @@ export default function HomeAlt({ bundledCategoryData, sectionList }: props) {
         <link rel="icon" href="/logo.svg" />
       </Head>
 
-      <NavigationBar sectionList={sectionList} signal={updateQueryText} query={queryText} />
+      <NavigationBar sectionList={sectionList} queryUpdateSignal={updateQueryText} query={queryText} />
       <div className={styles.holder} />
       {
         queryText.length > 0 ?
@@ -67,6 +68,7 @@ export default function HomeAlt({ bundledCategoryData, sectionList }: props) {
           subtitle={'A catch up for last month popular stories'}
           isBeingSearch={Boolean(queryText.length)}
       />
+      <ScrollArrow />
       <div className={styles.holder} />
     </div>
   )

@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.scss'
 
 import getArticles, { getSections, getPeriodSections } from '../articles/articles'
 
+import ScrollArrow from '../components/scrollToTop'
 import NavigationBar from '../components/navigation/navbar'
 import TrendingByPeriod from '../components/homapage/trending_now/trendingByPeriod'
 import SearchResults from '../components/navigation/searchResults'
@@ -30,18 +31,21 @@ export default function Home({ allArticles, sectionList, periodSectionList }: pr
     return (
         <div className={styles.container}>
             <Head>
-                <title>NY Times</title>
+                <title>Trending - NY Times</title>
                 <meta name="description" content="Homepage for most popular NY times articles" />
                 <link rel="icon" href="/logo.svg" />
             </Head>
 
-            <NavigationBar sectionList={sectionList} signal={updateQueryText} query={queryText} />
+            <NavigationBar 
+                sectionList={sectionList} 
+                queryUpdateSignal={updateQueryText} 
+                query={queryText} 
+            />
 
             <div className={styles.holder} />
             {
                 queryText.length > 0 ?
                     <SearchResults results={results} origin={'index'} />
-                    // JSON.stringify(results)
                 : 
                     <div />
             }
@@ -68,6 +72,7 @@ export default function Home({ allArticles, sectionList, periodSectionList }: pr
                 isBeingSearch={Boolean(queryText.length)}
             />
             <div className={styles.hrLine} data-isbeingsearch={Boolean(queryText.length)} />
+            <ScrollArrow />
             <div className={styles.holder} />
         </div>
     )

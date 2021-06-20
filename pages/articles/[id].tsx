@@ -5,10 +5,12 @@ import { useState } from 'react'
 
 import styles from '../../styles/AnArticle.module.scss'
 
+import ScrollArrow from '../../components/scrollToTop'
+import SideBar from '../../components/navigation/sidebar'
+
 import { getAllArticlesId, getArticleData } from '../../articles/fetchArticleContent'
 import { getSections } from '../../articles/articles'
 
-import SideBar from '../../components/navigation/sidebar'
 
 interface props {
     articleData: any,
@@ -52,12 +54,18 @@ export default function AnArticle({ articleData, sectionList }: props) {
                 />
             </span>
             <div className={styles.sideBar}>
-                <SideBar status={isSideBarOpen} signal={openSideBar} sectionList={sectionList} query={'from id'} />
+                <SideBar 
+                    isOpenStatus={isSideBarOpen} 
+                    openSignal={openSideBar} 
+                    sectionList={sectionList} 
+                    query={'from id'} 
+                />
             </div>
             
             <article>
                 <div dangerouslySetInnerHTML={{ __html: articleData.html }} />
             </article>
+            <ScrollArrow />
         </section>
     );
 }

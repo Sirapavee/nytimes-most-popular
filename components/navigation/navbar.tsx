@@ -9,11 +9,11 @@ import SearchBar from './searchbar'
 
 interface props {
     sectionList?: any,
-    signal: any,
-    query: string
+    queryUpdateSignal: any,
+    query: string,
 }
 
-export default function NavigationBar({ sectionList, signal, query }: props) {
+export default function NavigationBar({ sectionList, queryUpdateSignal, query }: props) {
 
     const [isSideBarOpen, setIsSideBarOpen] = useState(false)
     const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
@@ -24,12 +24,15 @@ export default function NavigationBar({ sectionList, signal, query }: props) {
 
     const openSearchBar = () => {
         setIsSearchBarOpen(!isSearchBarOpen)
-        signal('')
+        queryUpdateSignal('')
     }
 
     const closeSideBarAndClearQuery = () => {
         openSideBar()
-        openSearchBar()
+
+        if (isSearchBarOpen) {
+            openSearchBar()
+        }
     }
 
     return (
@@ -55,9 +58,16 @@ export default function NavigationBar({ sectionList, signal, query }: props) {
                         height={20}
                     />
                 </span>
-                <SearchBar isOpen={isSearchBarOpen} signal={signal} query={query} />
+                <SearchBar isOpen={isSearchBarOpen} queryUpdateSignal={queryUpdateSignal} query={query} />
             </div>
-            <SideBar status={isSideBarOpen} signal={openSideBar} sectionList={sectionList} searchSignal={signal} query={query} exit={closeSideBarAndClearQuery} />
+            <SideBar 
+                isOpenStatus={isSideBarOpen} 
+                openSignal={openSideBar} 
+                sectionList={sectionList} 
+                queryUpdateSignal={queryUpdateSignal} 
+                query={query} 
+                exit={closeSideBarAndClearQuery} 
+            />
             <Link href={'/'}>
                 <a>
                     <p className={styles.title}>The New York Times</p> 

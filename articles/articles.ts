@@ -12,6 +12,25 @@ const filterOnlyHasMedia = (list: any) => {
     return newsWithMedia
 }
 
+const populateObject = (arr: any[], obj: any) => {
+
+    arr.forEach((article: any) => {
+
+        if (obj.hasOwnProperty(article['section'])) {
+            if (article['media'].length != 0) {
+                obj[article['section']].push(article)
+            }
+        }
+        else {
+            if (article['media'].length != 0) {
+                obj[article['section']] = [article]
+            }
+        }
+        
+    })
+    
+}
+
 const fetchArticlesData = async () => {
     
     try {
@@ -90,20 +109,7 @@ async function getSections() {
         const [trendingNow, thisWeek, thisMonth] = await getArticles()
         const bundledData = [...trendingNow, ...thisWeek, ...thisMonth]
 
-        bundledData.forEach((article: any) => {
-
-            if (sectionList.hasOwnProperty(article['section'])) {
-                if (article['media'].length != 0) {
-                    sectionList[article['section']].push(article)
-                }
-            }
-            else {
-                if (article['media'].length != 0) {
-                    sectionList[article['section']] = [article]
-                }
-            }
-            
-        })
+        populateObject(bundledData, sectionList)
 
         try {
             fs.writeFileSync(
@@ -145,50 +151,9 @@ async function getPeriodSections() {
         }
         const [trendingNow, thisWeek, thisMonth] = await getArticles()
 
-        trendingNow.forEach((article: any) => {
-
-            if (sectionList['trendingNow'].hasOwnProperty(article['section'])) {
-                if (article['media'].length != 0) {
-                    sectionList['trendingNow'][article['section']].push(article)
-                }
-            }
-            else {
-                if (article['media'].length != 0) {
-                    sectionList['trendingNow'][article['section']] = [article]
-                }
-            }
-
-        })
-
-        thisWeek.forEach((article: any) => {
-
-            if (sectionList['thisWeek'].hasOwnProperty(article['section'])) {
-                if (article['media'].length != 0) {
-                    sectionList['thisWeek'][article['section']].push(article)
-                }
-            }
-            else {
-                if (article['media'].length != 0) {
-                    sectionList['thisWeek'][article['section']] = [article]
-                }
-            }
-
-        })
-
-        thisMonth.forEach((article: any) => {
-
-            if (sectionList['thisMonth'].hasOwnProperty(article['section'])) {
-                if (article['media'].length != 0) {
-                    sectionList['thisMonth'][article['section']].push(article)
-                }
-            }
-            else {
-                if (article['media'].length != 0) {
-                    sectionList['thisMonth'][article['section']] = [article]
-                }
-            }
-
-        })
+        populateObject(trendingNow, sectionList['trendingNow'])
+        populateObject(thisWeek, sectionList['thisWeek'])
+        populateObject(thisMonth, sectionList['thisMonth'])
 
         try {
             fs.writeFileSync(

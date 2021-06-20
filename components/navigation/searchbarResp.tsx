@@ -1,12 +1,12 @@
 import styles from '../../styles/SearchBarResponsive.module.scss'
 
 interface props {
-    signal: any,
+    queryUpdateSignal: any,
     jumpToResultSignal: any,
     query: string
 }
 
-export default function SearchBarResponsive({ signal, jumpToResultSignal, query }: props) {
+export default function SearchBarResponsive({ queryUpdateSignal, jumpToResultSignal, query }: props) {
     return (
         <section
             className={styles.container}
@@ -18,7 +18,7 @@ export default function SearchBarResponsive({ signal, jumpToResultSignal, query 
                 placeholder={'SEARCH'} 
                 required 
                 className={styles.searchField}
-                onChange={input => signal(input.target.value)}
+                onChange={input => queryUpdateSignal(input.target.value)}
                 value={query}
             ></input>
             <button id={'submitBtnRes'} className={styles.submitBtn} onClick={jumpToResultSignal}>GO</button>

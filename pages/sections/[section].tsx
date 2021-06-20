@@ -6,6 +6,7 @@ import styles from '../../styles/Section.module.scss'
 import { getSections } from '../../articles/articles'
 import { getAllSectionId, getSectionData } from '../../articles/fetchSectionContent'
 
+import ScrollArrow from '../../components/scrollToTop'
 import NavigationBar from '../../components/navigation/navbar'
 import ArticleBox from '../../components/section/article'
 import SearchResults from '../../components/navigation/searchResults'
@@ -36,7 +37,7 @@ export default function Article({ sectionData, sectionList }: props) {
                 <link rel="icon" href="/logo.svg" />
             </Head>
             
-            <NavigationBar sectionList={sectionList} signal={updateQueryText} query={queryText} />
+            <NavigationBar sectionList={sectionList} queryUpdateSignal={updateQueryText} query={queryText} />
             
             {
                 queryText.length > 0 ?
@@ -62,6 +63,7 @@ export default function Article({ sectionData, sectionList }: props) {
                     )
                 })
             } */}
+            <ScrollArrow />
         </div>
     );
 }
