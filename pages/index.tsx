@@ -78,7 +78,7 @@ export default function Home({ allArticles, sectionList, periodSectionList }: pr
     )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     const [trendingNow, thisWeek, thisMonth] = await getArticles()
     const sectionList = await getSections()
     const periodSectionList = await getPeriodSections()

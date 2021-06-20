@@ -74,7 +74,7 @@ export default function HomeAlt({ bundledCategoryData, sectionList }: props) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const [trendingNow, thisWeek, thisMonth] = await getArticles()
   const sectionList = await getSections()
 
