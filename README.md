@@ -12,4 +12,4 @@ On localhost of your device
 Access this site I hosted on Vercel
 ===================================
 1. Here is the [Link to the website](https://nytimes-most-popular.vercel.app/)
-2. I use the Static Site Generation technique, in which the page is generated at **build time**. It should not has trouble with CORS. If the problem is presented, I suggest you install the extension at segment 1.1.
+2. I use the Static Site Generation technique, in which the page is generated at **build time**. It should not has trouble with CORS. If the problem is presented, I suggest installing the [Allow CORS](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=th) extension.
